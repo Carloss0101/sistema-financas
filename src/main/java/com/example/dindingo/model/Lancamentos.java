@@ -12,8 +12,9 @@ public class Lancamentos {
     private String descricao;
     private Usuario usuario;
     private int id;
+    private Dashboard dashboard;
 
-    public Lancamentos(Date data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, int id) {
+    public Lancamentos(Date data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, int id, Dashboard dashboard) {
         this.data = data;
         this.valor = valor;
         this.nome = nome;
@@ -23,6 +24,7 @@ public class Lancamentos {
         this.descricao = descricao;
         this.usuario = usuario;
         this.id = id;
+        this.dashboard = dashboard;
     }
 
     public void salvar() {
@@ -112,4 +114,8 @@ public class Lancamentos {
     public void setData(Date data) {
         this.data = data;
     }
+
+    public void setDashboard(Dashboard dashboard) {this.dashboard = dashboard;}
+
+    public Dashboard getDashboard() {return dashboard;}
 }
