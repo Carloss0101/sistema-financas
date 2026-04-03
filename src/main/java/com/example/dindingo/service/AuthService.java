@@ -1,10 +1,16 @@
 package com.example.dindingo.service;
 
 import com.example.dindingo.model.Usuario;
+import com.example.dindingo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+    private final UsuarioRepository usuarioRepository;
+
+    public AuthService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     public boolean login(Usuario usuario) {
         if (usuario.getEmail().equals("admin@email.com") &&
@@ -38,6 +44,7 @@ public class AuthService {
                 return "Senha inválida";
             }
 
+            usuarioRepository.salvar(usuario);
             return null;
         } catch (Exception err) {
             System.out.println("Ocorreu um Erro ao cadatrar Usuário: " + err);
