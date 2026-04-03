@@ -2,7 +2,10 @@ package com.example.dindingo.service;
 
 import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.UsuarioRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -13,12 +16,26 @@ public class AuthService {
     }
 
     public boolean login(Usuario usuario) {
-        if (usuario.getEmail().equals("admin@email.com") &&
-                usuario.getSenha().equals("1234")) {
-            return true;
+        String emailReq = usuario.getEmail();
+        String senhaReq = usuario.getSenha();
+
+        Usuario user = usuarioRepository.findByEmail(emailReq);
+
+        if (user == null) {
+            System.out.println("[Login] email nao encontrado.");
+            return false;
         }
 
-        return false;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        boolean senhaCorreta = encoder.matches(senhaReq, user.getSenha());
+
+        if (senhaCorreta) {
+            System.out.println("[Login] sucesso!");
+            return true;
+        } else {
+            System.out.println("[Login] senha incorreta.");
+            return false;
+        }
     }
 
     public String cadastrar(Usuario usuario) {
@@ -32,19 +49,23 @@ public class AuthService {
                 return "Nome inválido!"; //nome invalido
             }
 
-            if(cpfReq == null || cpfReq.length() != 11) {
+            if(cpfReq == null || cpfReq.length() != 11 || usuarioRepository.existsByCpf(cpfReq)) {
                 return "Cpf inválido"; //cpf inválido
             }
 
-            if (emailReq == null || !emailReq.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            if (emailReq == null || !emailReq.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$") || usuarioRepository.existsByEmail(emailReq)) {
                 return "Email inválido";
             }
 
-            if(senhaReq == null || senhaReq.length() > 6) {
+            if(senhaReq == null || senhaReq.length() < 6) {
                 return "Senha inválida";
             }
 
-            usuarioRepository.salvar(usuario);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String senhaHash = encoder.encode(senhaReq);
+
+            usuario.setSenha(senhaHash); //Atualiza a senha para hash
+            usuarioRepository.save(usuario);
             return null;
         } catch (Exception err) {
             System.out.println("Ocorreu um Erro ao cadatrar Usuário: " + err);
