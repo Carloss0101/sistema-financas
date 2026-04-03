@@ -40,7 +40,7 @@ public class Lancamentos {
     }
 
     public void listar() {
-        //Lista o lancamento por meio do id do usuario e mes.
+        //Lista o lancamento por meio do id do usuario e mes;
     }
 
     public double getValor() {
