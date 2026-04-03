@@ -25,6 +25,22 @@ public class Lancamentos {
         this.id = id;
     }
 
+    public void salvar() {
+        //Valida os dados e salva no banco.
+    }
+
+    public void editar() {
+        //Valida os dados e da um upload no banco.
+    }
+
+    public void deletar() {
+        //deleta o lancamento no banco por meio do id.
+    }
+
+    public void listar() {
+        //Lista o lancamento por meio do id do usuario e mes.
+    }
+
     public double getValor() {
         return valor;
     }
