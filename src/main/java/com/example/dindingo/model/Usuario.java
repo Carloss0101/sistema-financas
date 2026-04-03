@@ -16,10 +16,6 @@ public class Usuario {
     public Usuario() {
     }
 
-    public void login() {
-        //Validar credenciais do usuário
-    }
-
     public void cadastrar() {
         //Verificar informações do usuário e cadastrar no banco.
     }
