@@ -1,10 +1,10 @@
 package com.example.dindingo.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Lancamentos {
     private double valor;
-    private Date data;
+    private LocalDate data;
     private String nome;
     private String categoria;
     private String tipo;
@@ -14,7 +14,7 @@ public class Lancamentos {
     private int id;
     private Dashboard dashboard;
 
-    public Lancamentos(Date data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, int id, Dashboard dashboard) {
+    public Lancamentos(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, int id, Dashboard dashboard) {
         this.data = data;
         this.valor = valor;
         this.nome = nome;
@@ -107,11 +107,11 @@ public class Lancamentos {
         this.nome = nome;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
