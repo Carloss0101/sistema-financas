@@ -28,10 +28,12 @@ public class AuthController {
 
     @PostMapping("/cadastro")
     public ResponseEntity<String> cadastro(@RequestBody Usuario usuario) {
-        if(authService.cadastrar(usuario)) {
-            return ResponseEntity.ok("Cadastro realizado com sucesso!");
+        String erro = authService.cadastrar(usuario);
+        if(erro != null) {
+            return ResponseEntity.badRequest().body(erro);
         }
-        return ResponseEntity.badRequest().body("Informações Inválidas!");
+
+        return ResponseEntity.ok("Cadastro realizado com sucesso!");
     }
 
 }

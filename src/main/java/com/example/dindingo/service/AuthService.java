@@ -15,7 +15,7 @@ public class AuthService {
         return false;
     }
 
-    public boolean cadastrar(Usuario usuario) {
+    public String cadastrar(Usuario usuario) {
         try {
             String nomeReq = usuario.getNome();
             String cpfReq = usuario.getCpf().replaceAll("\\D", ""); //Pega somente os números
@@ -23,25 +23,25 @@ public class AuthService {
             String senhaReq = usuario.getSenha();
 
             if(nomeReq == null || nomeReq.isBlank() || nomeReq.length() > 50) {
-                return false; //nome invalido
+                return "Nome inválido!"; //nome invalido
             }
 
             if(cpfReq == null || cpfReq.length() != 11) {
-                return false; //cpf inválido
+                return "Cpf inválido"; //cpf inválido
             }
 
             if (emailReq == null || !emailReq.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-                return false;
+                return "Email inválido";
             }
 
             if(senhaReq == null || senhaReq.length() > 6) {
-                return false;
+                return "Senha inválida";
             }
 
-            return true;
+            return null;
         } catch (Exception err) {
             System.out.println("Ocorreu um Erro ao cadatrar Usuário: " + err);
-            return false;
+            return "Ocorreu um Erro ao cadatrar Usuário";
         }
     }
 }
