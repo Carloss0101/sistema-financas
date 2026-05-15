@@ -23,7 +23,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-
         if(authService.login(usuario)) {
             String token = jwtService.gerarToken(usuario);
             return ResponseEntity.ok(Map.of("AccessToken", token));
