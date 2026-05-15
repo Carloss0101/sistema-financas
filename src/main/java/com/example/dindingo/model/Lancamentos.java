@@ -1,8 +1,16 @@
 package com.example.dindingo.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "lancamento")
 public class Lancamentos {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private double valor;
     private LocalDate data;
     private String nome;
@@ -10,11 +18,14 @@ public class Lancamentos {
     private String tipo;
     private boolean recorrencia;
     private String descricao;
-    private Usuario usuario;
-    private int id;
-    private Dashboard dashboard;
 
-    public Lancamentos(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, int id, Dashboard dashboard) {
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    //private Dashboard dashboard;
+
+    public Lancamentos(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, Long id) {
         this.data = data;
         this.valor = valor;
         this.nome = nome;
@@ -24,7 +35,6 @@ public class Lancamentos {
         this.descricao = descricao;
         this.usuario = usuario;
         this.id = id;
-        this.dashboard = dashboard;
     }
 
     public void salvar() {
@@ -51,11 +61,11 @@ public class Lancamentos {
         this.valor = valor;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -114,8 +124,4 @@ public class Lancamentos {
     public void setData(LocalDate data) {
         this.data = data;
     }
-
-    public void setDashboard(Dashboard dashboard) {this.dashboard = dashboard;}
-
-    public Dashboard getDashboard() {return dashboard;}
 }
