@@ -24,7 +24,7 @@ public class NotificacaoController {
     }
 
     @PatchMapping("/{id}/lida")
-    public public ResponseEntity<String> marcarComoLida(@PathVariable Long id) {
+    public ResponseEntity<String> marcarComoLida(@PathVariable Long id) {
         boolean sucesso = notificacaoServices.marcarComoLida(id);
         if (!sucesso) {
             return ResponseEntity
