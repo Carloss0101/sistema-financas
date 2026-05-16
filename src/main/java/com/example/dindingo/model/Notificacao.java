@@ -1,20 +1,28 @@
 package com.example.dindingo.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "notificacao")
 public class Notificacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String mensagem;
     private LocalDate data;
     private boolean lida;
-    private int userID;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
-    public Notificacao(int userID, boolean lida, LocalDate data, String mensagem, int id) {
-        this.userID = userID;
-        this.lida = lida;
-        this.data = data;
+    public Notificacao(String mensagem, LocalDate data, boolean lida, Usuario usuario) {
         this.mensagem = mensagem;
-        this.id = id;
+        this.data = data;
+        this.lida = lida;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -23,14 +31,6 @@ public class Notificacao {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public boolean isLida() {
@@ -56,4 +56,8 @@ public class Notificacao {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
+
+    public Usuario getUsuario() { return usuario; }
+
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 }
