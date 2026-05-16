@@ -25,14 +25,14 @@ public class LancamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> editar(@PathVariable int id, @RequestBody Lancamentos lancamento) {
-        lancamento.setId(id);
+    public ResponseEntity<String> editar(@PathVariable long id, @RequestBody Lancamentos lancamento) {
+        lancamento.setId(Long.valueOf(id));
         lancamentoService.editar(lancamento);
         return ResponseEntity.ok("Lançamento atualizado com sucesso!");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable int id) {
+    public ResponseEntity<String> deletar(@PathVariable long id) {
         lancamentoService.deletar(id);
         return ResponseEntity.ok("Lançamento removido com sucesso!");
     }
