@@ -20,26 +20,32 @@ public class LancamentoController {
 
     @PostMapping
     public ResponseEntity<String> salvar(@RequestBody Lancamentos lancamento) {
-        lancamentoService.salvar(lancamento);
-        return ResponseEntity.ok("Lançamento criado com sucesso!");
+        if (!lancamentoService.salvar(lancamento)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> editar(@PathVariable long id, @RequestBody Lancamentos lancamento) {
-        lancamento.setId(Long.valueOf(id));
-        lancamentoService.editar(lancamento);
-        return ResponseEntity.ok("Lançamento atualizado com sucesso!");
+        lancamento.setId(id);
+        if (!lancamentoService.editar(lancamento)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.status(200).build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletar(@PathVariable long id) {
-        lancamentoService.deletar(id);
-        return ResponseEntity.ok("Lançamento removido com sucesso!");
+        if (!lancamentoService.deletar(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.status(200).build();
     }
 
     @GetMapping
     public ResponseEntity<List<Lancamentos>> listar() {
         List<Lancamentos> lista = lancamentoService.listar();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.status(200).body(lista);
     }
 }

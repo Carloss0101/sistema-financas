@@ -4,7 +4,6 @@ import com.example.dindingo.model.Lancamentos;
 import com.example.dindingo.repository.LancamentoRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,37 +14,39 @@ public class LaunchService {
         this.launchRepo = launchRepo;
     }
 
-    public String salvar(Lancamentos lancamento) {
+    public boolean salvar(Lancamentos lancamento) {
         try {
-            String estado = valido(lancamento);
-            if (estado.compareTo("sucesso")==0) {
-                lancamento.setId(null);
-                launchRepo.save(lancamento);
+            String estado = validar(lancamento);
+            if (estado.compareTo("sucesso")!=0) {
+                System.err.println("LaunchService -> [salvar]: " + estado);
+                return false;
             }
-            return estado;
+            lancamento.setId(null);
+            launchRepo.save(lancamento);
+            return true;
         }
         catch (Exception e) {
-            return String.format("Ocorreu um erro ao cadastrar o lancamento: %s", e);
+            System.err.println("LaunchService -> [salvar]: " + e);
+            return false;
         }
     }
 
     public boolean editar(Lancamentos lancamento) {
-        if (lancamento.getId()==null) {
-            System.out.println("id null nao permitido");
-            return false;
-        }
-
-        String estado = valido(lancamento);
+        String estado = validar(lancamento);
         if (estado.compareTo("sucesso")!=0) {
-            System.out.println("[Deletar Lancamento]: Atributo(s) invalido(s)");
+            System.err.println("LaunchService -> [editar]: " + estado);
             return false;
         }
 
-        long id = lancamento.getId().longValue();
-        boolean lancamentoExiste = launchRepo.existsById(id);
+        if (lancamento.getId()==null) {
+            System.err.println("LaunchService -> [editar]: ID nao foi informado");
+            return false;
+        }
+
+        boolean lancamentoExiste = launchRepo.existsById(lancamento.getId());
 
         if (!lancamentoExiste) {
-            System.out.println("[Deletar Lancamento]: ID nao encontrado");
+            System.err.println("LaunchService -> [editar]: ID nao encontrado");
             return false;
         }
 
@@ -55,14 +56,14 @@ public class LaunchService {
     }
 
     public boolean deletar(long id) {
-        Lancamentos editLancamento  = launchRepo.findById(id);
+        Lancamentos delLanc  = launchRepo.findById(id);
 
-        if (editLancamento==null) {
-            System.out.println("[Deletar Lancamento]: ID nao encontrado");
+        if (delLanc==null) {
+            System.err.println("LaunchService -> [deletar]: ID nao encontrado");
             return false;
         }
 
-        launchRepo.delete(editLancamento);
+        launchRepo.delete(delLanc);
 
         return true;
     }
@@ -71,9 +72,9 @@ public class LaunchService {
         return launchRepo.findAll();
     }
 
-    private String valido(Lancamentos lancamento) {
+    private String validar(Lancamentos lancamento) {
         if (lancamento==null) {
-            return "objeto lancamento null";
+            return "null object";
         }
         if (lancamento.getValor() <= 0.0) {
             return String.format("valor invalido: %f", lancamento.getValor());
