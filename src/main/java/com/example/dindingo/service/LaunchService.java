@@ -1,6 +1,7 @@
 package com.example.dindingo.service;
 
 import com.example.dindingo.model.Lancamentos;
+import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.LancamentoRepository;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +69,8 @@ public class LaunchService {
         return true;
     }
 
-    public List<Lancamentos> listar() {
-        return launchRepo.findAll();
+    public List<Lancamentos> listarPorUsuaro(Usuario usuario) {
+        return launchRepo.findAllbyUser(usuario);
     }
 
     private String validar(Lancamentos lancamento) {
