@@ -70,7 +70,7 @@ public class LaunchService {
     }
 
     public List<Lancamentos> listarPorUsuaro(Usuario usuario) {
-        return launchRepo.findAllbyUser(usuario);
+        return launchRepo.findAllByUsuario(usuario);
     }
 
     private String validar(Lancamentos lancamento) {

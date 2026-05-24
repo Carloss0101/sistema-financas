@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface LancamentoRepository extends JpaRepository<Lancamentos, Long> {
     Lancamentos findById(long id);
 
-    List<Lancamentos> findAllbyUser(Usuario usuario);
+    List<Lancamentos> findAllByUsuario(Usuario usuario);
 
     boolean existsById(long id);
 }

@@ -14,7 +14,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // desativa CSRF (API REST)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // libera login e cadastro
+                        .requestMatchers("/",
+                                "/pages/**",
+                                "/css/**",
+                                "/js/**",
+                                "/auth/**").permitAll() // libera login e cadastro
                         .anyRequest().authenticated() // resto precisa de login
                 );
 

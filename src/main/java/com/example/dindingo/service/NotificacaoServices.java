@@ -2,12 +2,15 @@ package com.example.dindingo.service;
 
 import com.example.dindingo.model.Notificacao;
 import com.example.dindingo.repository.NotificacaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class NotificacaoServices {
-
+    @Autowired
     private NotificacaoRepository notificacaoRepository;
 
     public boolean enviarEmail(Notificacao notificacao) {
