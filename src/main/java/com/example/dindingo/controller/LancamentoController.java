@@ -1,6 +1,7 @@
 package com.example.dindingo.controller;
 
 import com.example.dindingo.model.Lancamentos;
+import com.example.dindingo.model.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.dindingo.service.LaunchService;
@@ -43,9 +44,9 @@ public class LancamentoController {
         return ResponseEntity.status(200).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Lancamentos>> listar() {
-        List<Lancamentos> lista = lancamentoService.listar();
+    @GetMapping("/listar")
+    public ResponseEntity<List<Lancamentos>> listar(@RequestBody Usuario usuario) {
+        List<Lancamentos> lista = lancamentoService.listarPorUsuaro(usuario);
         return ResponseEntity.status(200).body(lista);
     }
 }

@@ -8,11 +8,14 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamentos, Long> {
     Lancamentos findById(long id);
+
+    List<Lancamentos> findAllbyUser(Usuario usuario);
 
     boolean existsById(long id);
 }
