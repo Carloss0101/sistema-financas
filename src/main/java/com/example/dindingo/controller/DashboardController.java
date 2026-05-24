@@ -19,11 +19,21 @@ public class DashboardController {
     }
 
     @GetMapping
-    public ResponseEntity<Dashboard> obterDashboard(
+    public ResponseEntity<?> obterDashboard(
             @RequestParam Long usuarioId,
             @RequestParam int mes) {
 
-        Dashboard dashboard = dashboardService.gerarDashboard(usuarioId, mes);
-        return ResponseEntity.ok(dashboard);
+        try {
+            Dashboard dashboard = dashboardService.gerarDashboard(usuarioId, mes);
+
+            return ResponseEntity.ok(dashboard);
+
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("Nenhum lancamento este mes")) {
+                return ResponseEntity.ok(e.getMessage());
+            }
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
