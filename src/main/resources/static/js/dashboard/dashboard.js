@@ -157,4 +157,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     carregarDados();
+
+    const btnExportar = document.getElementById("btn-exportar-relatorio");
+
+    btnExportar.addEventListener("click", async () => {
+        try {
+            const url = `http://localhost:8080/api/relatorio/exportar?usuarioId=${USUARIO_ID}&mes=${mesSelecionado}`;
+
+            window.open(url, '_blank');
+        } catch (error) {
+            console.error("Erro ao baixar o relatório:", error);
+            alert("Não foi possível baixar o relatório. Tente novamente.");
+        }
+    });
 });
