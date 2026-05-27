@@ -24,7 +24,7 @@ public class Lancamentos {
     private Usuario usuario;
 
     //private Dashboard dashboard;
-
+    public Lancamentos() {}
     public Lancamentos(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, Long id) {
         this.data = data;
         this.valor = valor;
