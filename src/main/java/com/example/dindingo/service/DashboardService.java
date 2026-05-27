@@ -37,6 +37,6 @@ public class DashboardService {
 
         double saldo = totalReceita - totalDespesa;
 
-        return new Dashboard(mes, totalReceita, totalDespesa, saldo);
+        return new Dashboard(mes, saldo, totalReceita, totalDespesa);
     }
 }
