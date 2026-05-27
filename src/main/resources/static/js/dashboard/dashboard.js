@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dataAtual = new Date();
     let mesSelecionado = dataAtual.getMonth() + 1;
-    const USUARIO_ID = localStorage.getItem("idUser") || 1;
+    const USUARIO_ID = localStorage.getItem("usuarioID") || 1;
     console.log("Usuario id index ", USUARIO_ID)
     const nomesMeses = [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",

@@ -44,7 +44,7 @@ async function cadastrar(usuario) {
 
 async function obterDadosDashboard(usuarioId, mes) {
     return await apiRequest(
-        `/dashboard?usuarioId=${usuarioId}&mes=${mes}`,
+        `/api/dashboard?usuarioId=${usuarioId}&mes=${mes}`,
         "GET"
     );
 }
