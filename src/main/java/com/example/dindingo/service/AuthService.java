@@ -15,7 +15,7 @@ public class AuthService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public boolean login(Usuario usuario) {
+    public Usuario login(Usuario usuario) {
         String emailReq = usuario.getEmail();
         String senhaReq = usuario.getSenha();
 
@@ -23,7 +23,7 @@ public class AuthService {
 
         if (user == null) {
             System.out.println("[Login] email nao encontrado.");
-            return false;
+            return null;
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -31,10 +31,10 @@ public class AuthService {
 
         if (senhaCorreta) {
             System.out.println("[Login] sucesso!");
-            return true;
+            return user;
         } else {
             System.out.println("[Login] senha incorreta.");
-            return false;
+            return null;
         }
     }
 

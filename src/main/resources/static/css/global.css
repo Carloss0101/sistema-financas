@@ -8,6 +8,11 @@
     --color-text-light: #6b7280;
     --color-error: #dc2626;
     --color-success: #16a34a;
+    --cor-background-escura: #101728;
+    --cor-background-clara: #2a3b66;
+    --cor-background-modal: #260e69;
+    --cor-botao-azul: #007bff;
+    --fonte-padrao: 'Segoe UI', Arial, sans-serif;
 
     --font-default: 'Segoe UI', sans-serif;
 

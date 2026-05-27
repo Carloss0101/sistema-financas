@@ -23,9 +23,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        if(authService.login(usuario)) {
+        Usuario usuarioLogado = authService.login(usuario);
+        if(usuarioLogado != null) {
             String token = jwtService.gerarToken(usuario);
-            return ResponseEntity.ok(Map.of("AccessToken", token));
+            return ResponseEntity.ok(Map.of(
+                    "messagem", "Usuário logado com sucesso",
+                    "AccessToken", token,
+                    "usuario_nome", usuarioLogado.getNome(),
+                    "usuario_id", usuarioLogado.getId()
+            ));
         }
         return ResponseEntity.badRequest().body("Email ou senha inválidos");
     }
