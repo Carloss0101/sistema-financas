@@ -1,5 +1,6 @@
 package com.example.dindingo.repository;
 
+import com.example.dindingo.dto.LancamentosDTO;
 import com.example.dindingo.model.Lancamentos;
 import com.example.dindingo.model.Usuario;
 import jakarta.persistence.EntityManager;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public interface LancamentoRepository extends JpaRepository<Lancamentos, Long> {
     Lancamentos findById(long id);
 
-    List<Lancamentos> findAllByUsuario(Usuario usuario);
+    List<LancamentosDTO> findAllByUsuario(Usuario usuario);
 
     boolean existsById(long id);
 }

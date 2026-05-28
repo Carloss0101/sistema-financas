@@ -1,5 +1,6 @@
 package com.example.dindingo.controller;
 
+import com.example.dindingo.dto.LancamentosDTO;
 import com.example.dindingo.model.Dashboard;
 import com.example.dindingo.model.Lancamentos;
 import com.example.dindingo.model.Usuario;
@@ -44,7 +45,7 @@ public class DashboardController {
             }
 
 
-            List<Lancamentos> lancamentosDoUsuario = launchService.listarPorUsuaro(usuario);
+            List<LancamentosDTO> lancamentosDoUsuario = launchService.listarPorUsuario(usuario);
 
 
             Dashboard dashboard = dashboardService.gerarDashboard(lancamentosDoUsuario, mes);

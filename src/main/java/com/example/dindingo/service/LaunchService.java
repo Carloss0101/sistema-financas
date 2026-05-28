@@ -1,5 +1,6 @@
 package com.example.dindingo.service;
 
+import com.example.dindingo.dto.LancamentosDTO;
 import com.example.dindingo.model.Lancamentos;
 import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.LancamentoRepository;
@@ -69,13 +70,16 @@ public class LaunchService {
         return true;
     }
 
-    public List<Lancamentos> listarPorUsuaro(Usuario usuario) {
+    public List<LancamentosDTO> listarPorUsuario(Usuario usuario) {
         return launchRepo.findAllByUsuario(usuario);
     }
 
     private String validar(Lancamentos lancamento) {
         if (lancamento==null) {
             return "null object";
+        }
+        if (lancamento.getUsuario()==null) {
+            return "usuario invalido: null";
         }
         if (lancamento.getValor() <= 0.0) {
             return String.format("valor invalido: %f", lancamento.getValor());
@@ -84,8 +88,8 @@ public class LaunchService {
             lancamento.getNome().length() > 50) {
             return String.format("nome invalido: %s", lancamento.getNome());
         }
-        if (lancamento.getTipo().toLowerCase().compareTo("despesa")!=0 ||
-            lancamento.getTipo().toLowerCase().compareTo("receita")!=0) {
+        if (!lancamento.getTipo().equalsIgnoreCase("despesa") &&
+            !lancamento.getTipo().equalsIgnoreCase("receita")) {
             return String.format("tipo invalido: %s", lancamento.getTipo());
         }
         return "sucesso";
