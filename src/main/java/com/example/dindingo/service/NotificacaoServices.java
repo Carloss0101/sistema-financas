@@ -1,8 +1,15 @@
 package com.example.dindingo.service;
 
 import com.example.dindingo.model.Notificacao;
+import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.NotificacaoRepository;
+import com.example.dindingo.repository.UsuarioRepository;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,29 +17,47 @@ import java.util.Optional;
 
 @Service
 public class NotificacaoServices {
+
     @Autowired
     private NotificacaoRepository notificacaoRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public boolean enviarEmail(Notificacao notificacao) {
         try {
 
-            System.out.println("Enviando email...");
-            System.out.println("Mensagem: " + notificacao.getMensagem());
-            System.out.println("Data: " + notificacao.getData());
-            //Conectar sistema de gerar email...
+            Optional<Usuario> usuarioOpt =
+                    usuarioRepository.findById(notificacao.getUsuario().getId());
+
+            if (usuarioOpt.isEmpty()) {
+                return false;
+            }
+
+            String emailDestino = usuarioOpt.get().getEmail();
+
+            SimpleMailMessage email = new SimpleMailMessage();
+
+            email.setTo(emailDestino);
+            email.setSubject("Nova Notificação");
+            email.setText(notificacao.getMensagem());
+
+            mailSender.send(email);
 
             notificacao.setLida(false);
             notificacaoRepository.save(notificacao);
 
             return true;
+
         } catch (Exception e) {
-            System.out.println("Erro ao enviar email: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
-
     public List<Notificacao> listarNotificacoes(Long usuarioId) {
-
         return notificacaoRepository.findByUsuarioId(usuarioId);
     }
 
@@ -51,5 +76,33 @@ public class NotificacaoServices {
         notificacaoRepository.save(notificacao);
 
         return true;
+    }
+
+    public void enviarRelatorioPorEmail(
+            String emailDestino,
+            byte[] pdf,
+            int mes) {
+
+        try {
+
+            MimeMessage message = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, true);
+
+            helper.setTo(emailDestino);
+            helper.setSubject("Relatório Financeiro");
+            helper.setText("Segue em anexo o relatório financeiro do mês " + mes + ".");
+
+            helper.addAttachment(
+                    "relatorio-mes-" + mes + ".pdf",
+                    new ByteArrayResource(pdf)
+            );
+
+            mailSender.send(message);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

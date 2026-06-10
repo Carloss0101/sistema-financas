@@ -2,6 +2,7 @@ package com.example.dindingo.service;
 
 import com.example.dindingo.dto.LancamentosDTO;
 import com.example.dindingo.model.Lancamentos;
+import com.example.dindingo.model.Notificacao;
 import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.LancamentoRepository;
 import com.example.dindingo.repository.UsuarioRepository;
@@ -21,14 +22,16 @@ import java.util.Locale;
 @Service
 public class RelatorioServices {
 
+    private final NotificacaoServices notificacaoServices;
     private final LancamentoRepository lancamentoRepository;
     private final UsuarioRepository usuarioRepository;
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
     private final DateTimeFormatter dataFormatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public RelatorioServices(LancamentoRepository lancamentoRepository, UsuarioRepository usuarioRepository) {
+    public RelatorioServices(LancamentoRepository lancamentoRepository, UsuarioRepository usuarioRepository, NotificacaoServices notificacaoServices) {
         this.lancamentoRepository = lancamentoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.notificacaoServices = notificacaoServices;
     }
 
     public List<LancamentosDTO> buscarLancamentosPorUsuarioId(Long usuarioId) {
@@ -184,6 +187,17 @@ public class RelatorioServices {
 //            document.add(rodape);
 
             document.close();
+
+            byte[] pdfGerado = out.toByteArray();
+
+            if (usuario != null) {
+                notificacaoServices.enviarRelatorioPorEmail(
+                        usuario.getEmail(),
+                        pdfGerado,
+                        mes
+                );
+            }
+
         } catch (DocumentException e) {
             System.err.println("Erro na estrutura do PDF: " + e.getMessage());
         }
