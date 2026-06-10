@@ -41,7 +41,7 @@ public class AuthService {
     public String cadastrar(Usuario usuario) {
         try {
             String nomeReq = usuario.getNome();
-            String cpfReq = usuario.getCpf().replaceAll("\\D", ""); //Pega somente os números
+            String cpfReq = usuario.getCpf();
             String emailReq = usuario.getEmail();
             String senhaReq = usuario.getSenha();
 
