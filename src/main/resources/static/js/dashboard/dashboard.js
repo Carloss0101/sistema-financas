@@ -141,8 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
             data: document.getElementById("lancamento-data").value,
             categoria: document.getElementById("lancamento-categoria").value,
             tipo: lancamentoTipo.value,
-            recorrencia: false,
-            descricao: "",
+            recorrencia: document.getElementById("lancamento-recorrencia").checked,
+            descricao: document.getElementById("lancamento-descricao").value,
             usuario: { id: USUARIO_ID }
         };
 

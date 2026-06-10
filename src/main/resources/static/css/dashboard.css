@@ -306,6 +306,12 @@ body {
     outline: none;
 }
 
+.form-group fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
 .form-group input:focus {
     border-color: var(--cor-botao-azul);
 }
