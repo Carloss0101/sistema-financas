@@ -65,6 +65,26 @@ async function listarLancamentos(userId) {
     )
 }
 
+async function cadastrarBoleto(boleto, usuarioId) {
+    return await apiRequest(`/api/boletos?usuarioId=${usuarioId}`, "POST", boleto);
+}
+
+async function listarBoletos(usuarioId) {
+    return await apiRequest(`/api/boletos?usuarioId=${usuarioId}`, "GET");
+}
+
+async function editarBoleto(id, boleto) {
+    return await apiRequest(`/api/boletos/${id}`, "PUT", boleto);
+}
+
+async function deletarBoleto(id) {
+    return await apiRequest(`/api/boletos/${id}`, "DELETE");
+}
+
+async function marcarBoletoComoPago(id) {
+    return await apiRequest(`/api/boletos/${id}/pagar`, "PATCH");
+}
+
 async function deletarLancamento(launchId) {
     const launchIdInt = parseInt(launchId, 10)
     return await apiRequest(

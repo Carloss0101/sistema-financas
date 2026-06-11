@@ -49,7 +49,10 @@
     <section class="lista-despesas">
         <div class="container-cabecalho-lancamentos">
             <h2 class="titulo-esquerda">Lançamentos do Mês</h2>
-            <button class="btn btn-pequeno exportar-relatorio" id="btn-exportar-relatorio">📄 Exportar Relatório</button>
+            <div>
+                <button class="btn btn-pequeno exportar-relatorio" id="btn-abrir-boletos" style="background-color: var(--cor-botao-azul);">🎫 Boletos</button>
+                <button class="btn btn-pequeno exportar-relatorio" id="btn-exportar-relatorio">📄 Exportar Relatório</button>
+            </div>
         </div>
 
         <div class="tabela-wrapper">
@@ -115,8 +118,68 @@
     </div>
 </div>
 
-<script src="/js/api/api.js"></script>
-<script src="/js/dashboard/dashboard.js"></script>
+<div id="modal-boletos" class="modal">
+    <div class="modal-content" style="max-width: 700px;"> <div class="modal-header">
+        <h2>Boletos</h2>
+        <span class="close" id="btn-fechar-boletos">&times;</span>
+    </div>
+
+        <button class="btn adicionar-receita" id="btn-novo-boleto" style="margin-bottom: 20px; min-width: auto; width: auto; padding: 10px 15px;">+ Adicionar Boleto</button>
+
+        <div class="tabela-wrapper" style="max-height: 250px;">
+            <table class="tabela-despesas" style="table-layout: auto;">
+                <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Valor</th>
+                    <th>Vencimento</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="tabela-boletos-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="modal-form-boleto" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-boleto-titulo">Cadastrar Boleto</h2>
+            <span class="close" id="btn-fechar-form-boleto">&times;</span>
+        </div>
+        <form id="form-boleto">
+            <input type="hidden" id="boleto-id">
+
+            <div class="form-group">
+                <label for="boleto-titulo">Título / Descrição</label>
+                <input type="text" id="boleto-titulo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="boleto-valor">Valor (R$)</label>
+                <input type="number" id="boleto-valor" step="0.01" min="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="boleto-vencimento">Data de Vencimento</label>
+                <input type="date" id="boleto-vencimento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="boleto-codigo">Código de Barras (Opcional)</label>
+                <input type="text" id="boleto-codigo">
+            </div>
+
+            <button type="submit" class="btn-salvar" id="btn-salvar-boleto">Salvar Boleto</button>
+        </form>
+    </div>
+</div>
+
+<script src="../js/api/api.js"></script>
+<script type="module" src="../js/dashboard/dashboard.js"></script>
 </body>
 
 </html>

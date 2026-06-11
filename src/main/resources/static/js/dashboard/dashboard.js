@@ -1,3 +1,5 @@
+import { inicializarSistemaBoletos } from './boleto.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const mesAtualEl = document.getElementById("mesAtual");
     const btnMesAnterior = document.getElementById("mesAnterior");
@@ -22,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let mesSelecionado = dataAtual.getMonth() + 1;
     const USUARIO_ID = localStorage.getItem("usuarioID") || 1;
     console.log("Usuario id index ", USUARIO_ID)
+
+    inicializarSistemaBoletos(USUARIO_ID);
+
     const nomesMeses = [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -82,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${item.nome}</td>
                             <td class="${classeValor}">${sinal}${formatarMoeda(item.valor)}</td>
                             <td>
+                                <button class="btn-acao excluir" data-id="${item.id}">Editar</button>
                                 <button class="btn-acao excluir" data-id="${item.id}">Excluir</button>
                             </td>
                         `;
