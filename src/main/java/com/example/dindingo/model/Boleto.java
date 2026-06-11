@@ -13,7 +13,7 @@ public class Boleto {
     private String titulo;
     private double valor;
     private LocalDate vencimento;
-    private boolean pago;
+    private Boolean pago;
     private String codigoBarras;
 
 
@@ -30,7 +30,7 @@ public class Boleto {
     public Boleto() {
     }
 
-    public Boleto(LocalDate vencimento, String titulo, double valor, boolean pago, Usuario usuario, String codigoBarras) {
+    public Boleto(LocalDate vencimento, String titulo, double valor, Boolean pago, Usuario usuario, String codigoBarras) {
         this.vencimento = vencimento;
         this.titulo = titulo;
         this.valor = valor;
@@ -51,8 +51,8 @@ public class Boleto {
     public LocalDate getVencimento() { return vencimento; }
     public void setVencimento(LocalDate vencimento) { this.vencimento = vencimento; }
 
-    public boolean isPago() { return pago; }
-    public void setPago(boolean pago) { this.pago = pago; }
+    public Boolean isPago() { return pago; }
+    public void setPago(Boolean pago) { this.pago = pago; }
 
     public Usuario getUsuario() { return usuario; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
