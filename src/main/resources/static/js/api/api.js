@@ -50,9 +50,10 @@ async function obterDadosDashboard(usuarioId, mes) {
 }
 
 async function salvarLancamento(lancamento) {
-    const userId = lancamento.usuario.id
+    const userId = parseInt(lancamento.usuario.id, 10)
     return await apiRequest(
-        "/lancamentos/${userId}",
-        "POST"
+        `/lancamentos/${userId}`,
+        "POST",
+        lancamento
     );
 }
