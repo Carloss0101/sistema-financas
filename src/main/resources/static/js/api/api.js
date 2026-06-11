@@ -48,3 +48,11 @@ async function obterDadosDashboard(usuarioId, mes) {
         "GET"
     );
 }
+
+async function salvarLancamento(lancamento) {
+    const userId = lancamento.usuario.id
+    return await apiRequest(
+        "/lancamentos/${userId}",
+        "POST"
+    );
+}
