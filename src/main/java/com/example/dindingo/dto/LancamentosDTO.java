@@ -5,6 +5,7 @@ import com.example.dindingo.model.Lancamentos;
 import java.time.LocalDate;
 
 public class LancamentosDTO {
+    private Long id;
     private double valor;
     private LocalDate data;
     private String nome;
@@ -16,6 +17,7 @@ public class LancamentosDTO {
     public LancamentosDTO() {}
 
     public LancamentosDTO(Lancamentos lancamento) {
+        id = lancamento.getId();
         valor = lancamento.getValor();
         data = lancamento.getData();
         nome = lancamento.getNome();
@@ -23,6 +25,14 @@ public class LancamentosDTO {
         tipo = lancamento.getTipo();
         recorrencia = lancamento.isRecorrencia();
         descricao = lancamento.getDescricao();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getValor() {

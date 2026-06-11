@@ -66,8 +66,9 @@ async function listarLancamentos(userId) {
 }
 
 async function deletarLancamento(launchId) {
+    const launchIdInt = parseInt(launchId, 10)
     return await apiRequest(
-        `/lancamentos/${launchId}`,
+        `/lancamentos/${launchIdInt}`,
         "DELETE"
     )
 }
