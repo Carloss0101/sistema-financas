@@ -25,6 +25,9 @@ public class Notificacao {
         this.usuario = usuario;
     }
 
+    public Notificacao() {
+    }
+
     public int getId() {
         return id;
     }

@@ -1,7 +1,9 @@
 package com.example.dindingo.service;
 
+import com.example.dindingo.model.Boleto;
 import com.example.dindingo.model.Notificacao;
 import com.example.dindingo.model.Usuario;
+import com.example.dindingo.repository.BoletoRepository;
 import com.example.dindingo.repository.NotificacaoRepository;
 import com.example.dindingo.repository.UsuarioRepository;
 import jakarta.mail.internet.MimeMessage;
@@ -10,10 +12,13 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class NotificacaoServices {
@@ -26,6 +31,35 @@ public class NotificacaoServices {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private BoletoRepository boletoRepository;
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void verificarBoletosAVencer() {
+        LocalDate amanha = LocalDate.now().plusDays(1);
+
+
+        List<Boleto> boletosAVencer = boletoRepository.findByPagoFalseAndVencimento(amanha);
+
+
+        for (Boleto boleto : boletosAVencer) {
+            Notificacao notificacao = new Notificacao();
+            notificacao.setUsuario(boleto.getUsuario());
+
+
+            String texto = String.format("Lembrete: O boleto '%s' no valor de R$ %.2f vence amanhã (%s). Código de Barras: %s",
+                    boleto.getTitulo(),
+                    boleto.getValor(),
+                    boleto.getVencimento().toString(),
+                    boleto.getCodigoBarras() != null ? boleto.getCodigoBarras() : "Não informado");
+
+            notificacao.setMensagem(texto);
+
+
+            enviarEmail(notificacao);
+        }
+    }
 
     public boolean enviarEmail(Notificacao notificacao) {
         try {
