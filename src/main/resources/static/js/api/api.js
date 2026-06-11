@@ -57,3 +57,10 @@ async function salvarLancamento(lancamento) {
         lancamento
     );
 }
+
+async function listarLancamentos(userId) {
+    return await apiRequest(
+        `/lancamentos/listar/${userId}`,
+        "GET"
+    )
+}
