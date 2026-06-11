@@ -57,3 +57,18 @@ async function salvarLancamento(lancamento) {
         lancamento
     );
 }
+
+async function listarLancamentos(userId) {
+    return await apiRequest(
+        `/lancamentos/listar/${userId}`,
+        "GET"
+    )
+}
+
+async function deletarLancamento(launchId) {
+    const launchIdInt = parseInt(launchId, 10)
+    return await apiRequest(
+        `/lancamentos/${launchIdInt}`,
+        "DELETE"
+    )
+}
