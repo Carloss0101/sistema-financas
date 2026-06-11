@@ -64,3 +64,10 @@ async function listarLancamentos(userId) {
         "GET"
     )
 }
+
+async function deletarLancamento(launchId) {
+    return await apiRequest(
+        `/lancamentos/${launchId}`,
+        "DELETE"
+    )
+}
