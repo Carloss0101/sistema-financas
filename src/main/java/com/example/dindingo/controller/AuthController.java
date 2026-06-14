@@ -3,6 +3,8 @@ package com.example.dindingo.controller;
 import com.example.dindingo.model.Usuario;
 import com.example.dindingo.service.AuthService;
 import com.example.dindingo.service.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +24,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletResponse response) {
         Usuario usuarioLogado = authService.login(usuario);
         if(usuarioLogado != null) {
             String token = jwtService.gerarToken(usuario);
+
+            Cookie jwtCookie = new Cookie("token", token);
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setSecure(false);
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(2 * 60 * 60);
+
+            response.addCookie(jwtCookie);
+
             return ResponseEntity.ok(Map.of(
                     "messagem", "Usuário logado com sucesso",
-                    "AccessToken", token,
                     "usuario_nome", usuarioLogado.getNome(),
                     "usuario_id", usuarioLogado.getId()
             ));

@@ -5,7 +5,8 @@ async function apiRequest(endpoint, method, body = null) {
         method: method,
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        credentials: "include"
     };
 
     if (body) {
