@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "lancamento")
-public class Lancamentos {
+public class Lancamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +24,8 @@ public class Lancamentos {
     private Usuario usuario;
 
     //private Dashboard dashboard;
-    public Lancamentos() {}
-    public Lancamentos(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, Long id) {
+    public Lancamento() {}
+    public Lancamento(LocalDate data, double valor, String nome, String categoria, String tipo, boolean recorrencia, String descricao, Usuario usuario, Long id) {
         this.data = data;
         this.valor = valor;
         this.nome = nome;

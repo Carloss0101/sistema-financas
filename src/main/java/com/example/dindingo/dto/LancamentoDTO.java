@@ -1,10 +1,10 @@
 package com.example.dindingo.dto;
 
-import com.example.dindingo.model.Lancamentos;
+import com.example.dindingo.model.Lancamento;
 
 import java.time.LocalDate;
 
-public class LancamentosDTO {
+public class LancamentoDTO {
     private Long id;
     private double valor;
     private LocalDate data;
@@ -14,9 +14,9 @@ public class LancamentosDTO {
     private boolean recorrencia;
     private String descricao;
 
-    public LancamentosDTO() {}
+    public LancamentoDTO() {}
 
-    public LancamentosDTO(Lancamentos lancamento) {
+    public LancamentoDTO(Lancamento lancamento) {
         id = lancamento.getId();
         valor = lancamento.getValor();
         data = lancamento.getData();

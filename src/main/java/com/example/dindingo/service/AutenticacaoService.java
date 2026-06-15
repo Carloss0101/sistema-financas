@@ -5,13 +5,11 @@ import com.example.dindingo.repository.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class AuthService {
+public class AutenticacaoService {
     private final UsuarioRepository usuarioRepository;
 
-    public AuthService(UsuarioRepository usuarioRepository) {
+    public AutenticacaoService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 

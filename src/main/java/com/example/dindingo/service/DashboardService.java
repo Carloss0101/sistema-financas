@@ -1,8 +1,7 @@
 package com.example.dindingo.service;
 
-import com.example.dindingo.dto.LancamentosDTO;
+import com.example.dindingo.dto.LancamentoDTO;
 import com.example.dindingo.model.Dashboard;
-import com.example.dindingo.model.Lancamentos;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 @Service
 public class DashboardService {
 
-    public Dashboard gerarDashboard(List<LancamentosDTO> lancamentosDoUsuario, int mes) {
+    public Dashboard gerarDashboard(List<LancamentoDTO> lancamentosDoUsuario, int mes) {
 
         if (mes < 1 || mes > 12) {
             throw new IllegalArgumentException("Mês inválido.");
@@ -20,7 +19,7 @@ public class DashboardService {
         double totalDespesa = 0;
         int contador = 0;
 
-        for (LancamentosDTO lancamento : lancamentosDoUsuario) {
+        for (LancamentoDTO lancamento : lancamentosDoUsuario) {
             if (lancamento.getData() != null && lancamento.getData().getMonthValue() == mes) {
                 contador++;
 

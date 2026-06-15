@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter {
+public class AutenticacaoJwtFilter extends OncePerRequestFilter {
 
     @Value("${api.security.token.secret}")
     private String secret;

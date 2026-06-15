@@ -1,8 +1,6 @@
 package com.example.dindingo.service;
 
-import com.example.dindingo.dto.LancamentosDTO;
-import com.example.dindingo.model.Lancamentos;
-import com.example.dindingo.model.Notificacao;
+import com.example.dindingo.dto.LancamentoDTO;
 import com.example.dindingo.model.Usuario;
 import com.example.dindingo.repository.LancamentoRepository;
 import com.example.dindingo.repository.UsuarioRepository;
@@ -34,7 +32,7 @@ public class RelatorioServices {
         this.notificacaoServices = notificacaoServices;
     }
 
-    public List<LancamentosDTO> buscarLancamentosPorUsuarioId(Long usuarioId) {
+    public List<LancamentoDTO> buscarLancamentosPorUsuarioId(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
         if (usuario == null) {
             throw new RuntimeException("Usuário não encontrado para o ID: " + usuarioId);
@@ -43,18 +41,18 @@ public class RelatorioServices {
     }
 
     public byte[] gerarPdfRelatorio(Long usuarioId, int mes) {
-        List<LancamentosDTO> todosLancamentos = buscarLancamentosPorUsuarioId(usuarioId);
+        List<LancamentoDTO> todosLancamentos = buscarLancamentosPorUsuarioId(usuarioId);
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
         String nomeUsuario = (usuario != null) ? usuario.getNome() : "Usuário";
 
         double totalReceita = 0;
         double totalDespesa = 0;
 
-        List<LancamentosDTO> lancamentosDoMes = todosLancamentos.stream()
+        List<LancamentoDTO> lancamentosDoMes = todosLancamentos.stream()
                 .filter(l -> l.getData() != null && l.getData().getMonthValue() == mes)
                 .toList();
 
-        for (LancamentosDTO l : lancamentosDoMes) {
+        for (LancamentoDTO l : lancamentosDoMes) {
             if ("receita".equalsIgnoreCase(l.getTipo())) {
                 totalReceita += l.getValor();
             } else if ("despesa".equalsIgnoreCase(l.getTipo())) {
@@ -153,7 +151,7 @@ public class RelatorioServices {
                 cellVazia.setHorizontalAlignment(Element.ALIGN_CENTER);
                 tabelaItens.addCell(cellVazia);
             } else {
-                for (LancamentosDTO l : lancamentosDoMes) {
+                for (LancamentoDTO l : lancamentosDoMes) {
                     String dataStr = l.getData() != null ? l.getData().format(dataFormatador) : "-";
                     PdfPCell cData = new PdfPCell(new Paragraph(dataStr, fontValor));
                     cData.setHorizontalAlignment(Element.ALIGN_CENTER);

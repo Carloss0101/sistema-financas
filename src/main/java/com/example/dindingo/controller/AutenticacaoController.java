@@ -1,7 +1,7 @@
 package com.example.dindingo.controller;
 
 import com.example.dindingo.model.Usuario;
-import com.example.dindingo.service.AuthService;
+import com.example.dindingo.service.AutenticacaoService;
 import com.example.dindingo.service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,17 +15,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
-    private final AuthService authService;
+public class AutenticacaoController {
+    private final AutenticacaoService autenticacaoService;
     private final JwtService jwtService;
-    public AuthController(AuthService authService, JwtService jwtService) {
-        this.authService = authService;
+    public AutenticacaoController(AutenticacaoService autenticacaoService, JwtService jwtService) {
+        this.autenticacaoService = autenticacaoService;
         this.jwtService = jwtService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpServletResponse response) {
-        Usuario usuarioLogado = authService.login(usuario);
+        Usuario usuarioLogado = autenticacaoService.login(usuario);
         if(usuarioLogado != null) {
             String token = jwtService.gerarToken(usuario);
 
@@ -48,7 +48,7 @@ public class AuthController {
 
     @PostMapping("/cadastro")
     public ResponseEntity<String> cadastro(@RequestBody Usuario usuario) {
-        String erro = authService.cadastrar(usuario);
+        String erro = autenticacaoService.cadastrar(usuario);
         if(erro != null) {
             return ResponseEntity.badRequest().body(erro);
         }
