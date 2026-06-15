@@ -193,6 +193,10 @@ body {
     transition: 0.2s;
 }
 
+.editar {
+    background-color: var(--cor-botao-azul);
+}
+
 .excluir {
     background-color: #ef4444;
 }

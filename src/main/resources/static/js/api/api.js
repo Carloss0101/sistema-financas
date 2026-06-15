@@ -93,3 +93,12 @@ async function deletarLancamento(launchId) {
         "DELETE"
     )
 }
+
+async function editarLancamento(launchId, lancamento) {
+    const launchIdInt = parseInt(launchId, 10);
+    return await apiRequest(
+        `/lancamentos/${launchIdInt}`,
+        "PUT",
+        lancamento
+    );
+}

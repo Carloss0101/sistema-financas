@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const feedbackMsg = document.getElementById("dashboard-message");
 
     const modal = document.getElementById("modal-lancamento");
-    const formLancamento = document.getElementById("form-form-lancamento");
     const modalTitulo = document.getElementById("modal-titulo");
     const lancamentoTipo = document.getElementById("lancamento-tipo");
     const btnFecharModal = document.getElementById("btn-fechar-modal");
@@ -23,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataAtual = new Date();
     let mesSelecionado = dataAtual.getMonth() + 1;
     const USUARIO_ID = localStorage.getItem("usuarioID") || 1;
-    console.log("Usuario id index ", USUARIO_ID)
+    let idLancamentoEdicao = null;
+    let lancamentosCarregados = [];
 
     inicializarSistemaBoletos(USUARIO_ID);
 
@@ -71,13 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     return mesItem === mesSelecionado;
                 });
 
+                lancamentosCarregados = lancamentosDoMes;
+
                 if (lancamentosDoMes.length === 0) {
                     tabelaBody.innerHTML = `<tr><td colspan="4" style="color: #cbd5ff;">Nenhum lançamento neste mês.</td></tr>`;
                 } else {
                     lancamentosDoMes.forEach(item => {
                         const tr = document.createElement("tr");
-
-                        // Formata a data vinda do banco (yyyy-mm-dd para dd/mm/yyyy)
                         const dataFormatada = item.data ? item.data.split("-").reverse().join("/") : "-";
                         const classeValor = item.tipo.toLowerCase() === "receita" ? "texto-receita" : "texto-despesa";
                         const sinal = item.tipo.toLowerCase() === "receita" ? "" : "- ";
@@ -87,11 +87,15 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${item.nome}</td>
                             <td class="${classeValor}">${sinal}${formatarMoeda(item.valor)}</td>
                             <td>
-                                <button class="btn-acao excluir" data-id="${item.id}">Editar</button>
+                                <button class="btn-acao editar" data-id="${item.id}">Editar</button>
                                 <button class="btn-acao excluir" data-id="${item.id}">Excluir</button>
                             </td>
                         `;
                         tabelaBody.appendChild(tr);
+                    });
+
+                    document.querySelectorAll(".editar").forEach(btn => {
+                        btn.addEventListener("click", prepararEdicao);
                     });
 
                     document.querySelectorAll(".excluir").forEach(btn => {
@@ -126,12 +130,35 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarDados();
     });
 
-    function abrirModal(tipo) {
-        lancamentoTipo.value = tipo;
-        modalTitulo.innerText = tipo === "receita" ? "Adicionar Receita" : "Adicionar Despesa";
-        modal.classList.add("active");
+    function prepararEdicao(e) {
+        const id = parseInt(e.target.getAttribute("data-id"));
+        const lancamento = lancamentosCarregados.find(item => item.id === id);
 
-        document.getElementById("lancamento-data").value = new Date().toISOString().split('T')[0];
+        if (lancamento) {
+            idLancamentoEdicao = id;
+            abrirModal(lancamento.tipo, lancamento);
+        }
+    }
+
+    function abrirModal(tipo, lancamento = null) {
+        lancamentoTipo.value = tipo;
+
+        if (lancamento) {
+            modalTitulo.innerText = lancamento.tipo.toLowerCase() === "receita" ? "Editar Receita" : "Editar Despesa";
+            document.getElementById("lancamento-nome").value = lancamento.nome;
+            document.getElementById("lancamento-valor").value = lancamento.valor;
+            document.getElementById("lancamento-data").value = lancamento.data;
+            document.getElementById("lancamento-categoria").value = lancamento.categoria || "";
+            document.getElementById("lancamento-recorrencia").checked = lancamento.recorrencia;
+            document.getElementById("lancamento-descricao").value = lancamento.descricao || "";
+        } else {
+            idLancamentoEdicao = null;
+            modalTitulo.innerText = tipo === "receita" ? "Adicionar Receita" : "Adicionar Despesa";
+            document.getElementById("form-lancamento").reset();
+            document.getElementById("lancamento-data").value = new Date().toISOString().split('T')[0];
+        }
+
+        modal.classList.add("active");
     }
 
     btnNovaReceita.addEventListener("click", () => abrirModal("receita"));
@@ -141,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("form-lancamento").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const novoLancamento = {
+        const dadosLancamento = {
             nome: document.getElementById("lancamento-nome").value,
             valor: parseFloat(document.getElementById("lancamento-valor").value),
             data: document.getElementById("lancamento-data").value,
@@ -152,10 +179,18 @@ document.addEventListener("DOMContentLoaded", () => {
             usuario: { id: USUARIO_ID }
         };
 
-        const res = await salvarLancamento(novoLancamento);
+        let res;
+
+        if (idLancamentoEdicao) {
+            res = await editarLancamento(idLancamentoEdicao, dadosLancamento);
+        } else {
+            res = await salvarLancamento(dadosLancamento);
+        }
+
         if (res.ok) {
             modal.classList.remove("active");
             document.getElementById("form-lancamento").reset();
+            idLancamentoEdicao = null;
             carregarDados();
         } else {
             alert("Erro ao salvar lançamento. Verifique as restrições de validação.");
@@ -169,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnExportar.addEventListener("click", async () => {
         try {
             const url = `http://localhost:8080/api/relatorio/exportar?usuarioId=${USUARIO_ID}&mes=${mesSelecionado}`;
-
             window.open(url, '_blank');
         } catch (error) {
             console.error("Erro ao baixar o relatório:", error);
