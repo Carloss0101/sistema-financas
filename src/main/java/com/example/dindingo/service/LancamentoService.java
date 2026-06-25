@@ -10,10 +10,10 @@ import java.util.List;
 
 @Service
 public class LancamentoService {
-    private final LancamentoRepository launchRepo;
+    private final LancamentoRepository lancamentoRepository;
 
     public LancamentoService(LancamentoRepository launchRepo) {
-        this.launchRepo = launchRepo;
+        this.lancamentoRepository = launchRepo;
     }
 
     public boolean salvar(Lancamento lancamento) {
@@ -24,7 +24,7 @@ public class LancamentoService {
                 return false;
             }
             lancamento.setId(null);
-            launchRepo.save(lancamento);
+            lancamentoRepository.save(lancamento);
             return true;
         }
         catch (Exception e) {
@@ -45,33 +45,33 @@ public class LancamentoService {
             return false;
         }
 
-        boolean lancamentoExiste = launchRepo.existsById(lancamento.getId());
+        boolean lancamentoExiste = lancamentoRepository.existsById(lancamento.getId());
 
         if (!lancamentoExiste) {
             System.err.println("LaunchService -> [editar]: ID nao encontrado");
             return false;
         }
 
-        launchRepo.save(lancamento);
+        lancamentoRepository.save(lancamento);
 
         return true;
     }
 
     public boolean deletar(long id) {
-        Lancamento delLanc  = launchRepo.findById(id);
+        Lancamento delLanc  = lancamentoRepository.findById(id);
 
         if (delLanc==null) {
             System.err.println("LaunchService -> [deletar]: ID nao encontrado");
             return false;
         }
 
-        launchRepo.delete(delLanc);
+        lancamentoRepository.delete(delLanc);
 
         return true;
     }
 
     public List<LancamentoDTO> listarPorUsuario(Usuario usuario) {
-        return launchRepo.findAllByUsuario(usuario);
+        return lancamentoRepository.findAllByUsuario(usuario);
     }
 
     private String validar(Lancamento lancamento) {

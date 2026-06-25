@@ -4,7 +4,7 @@ import com.example.dindingo.model.Notificacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.dindingo.service.NotificacaoServices;
+import com.example.dindingo.service.NotificacaoService;
 
 import java.util.List;
 
@@ -14,18 +14,18 @@ import java.util.List;
 public class NotificacaoController {
 
     @Autowired
-    private NotificacaoServices notificacaoServices;
+    private NotificacaoService notificacaoService;
 
     @GetMapping("/listar")
     public ResponseEntity<List<Notificacao>> listar() {
         //trazer o id do usuário pelo middware de autenticacao, para garantir que ele receba somente as notificacoes dele.
-        List<Notificacao> notificacoes = notificacaoServices.listarNotificacoes(1234L);
+        List<Notificacao> notificacoes = notificacaoService.listarNotificacoes(1234L);
         return ResponseEntity.ok(notificacoes);
     }
 
     @PatchMapping("/{id}/lida")
     public ResponseEntity<String> marcarComoLida(@PathVariable Long id) {
-        boolean sucesso = notificacaoServices.marcarComoLida(id);
+        boolean sucesso = notificacaoService.marcarComoLida(id);
         if (!sucesso) {
             return ResponseEntity
                     .notFound()

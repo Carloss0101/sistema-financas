@@ -21,7 +21,7 @@ import java.util.Optional;
 
 
 @Service
-public class NotificacaoServices {
+public class NotificacaoService {
 
     @Autowired
     private NotificacaoRepository notificacaoRepository;

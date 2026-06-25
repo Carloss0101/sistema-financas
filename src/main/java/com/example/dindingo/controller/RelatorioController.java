@@ -1,25 +1,22 @@
 package com.example.dindingo.controller;
 
-import com.example.dindingo.model.Notificacao;
-import com.example.dindingo.service.NotificacaoServices;
-import com.example.dindingo.service.RelatorioServices;
+import com.example.dindingo.service.RelatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @RestController
 @RequestMapping("/api/relatorio")
 public class RelatorioController {
     @Autowired
-    RelatorioServices relatorioServices;
+    RelatorioService relatorioService;
 
     @GetMapping("/exportar")
     public ResponseEntity<?> exportarRelatorio(@RequestParam Long usuarioId, @RequestParam int mes) {
         try {
-            byte[] pdfBytes = relatorioServices.gerarPdfRelatorio(usuarioId, mes);
+            byte[] pdfBytes = relatorioService.gerarPdfRelatorio(usuarioId, mes);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);

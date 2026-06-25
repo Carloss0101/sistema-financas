@@ -18,18 +18,18 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class RelatorioServices {
+public class RelatorioService {
 
-    private final NotificacaoServices notificacaoServices;
+    private final NotificacaoService notificacaoService;
     private final LancamentoRepository lancamentoRepository;
     private final UsuarioRepository usuarioRepository;
     private final NumberFormat moedaFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
     private final DateTimeFormatter dataFormatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public RelatorioServices(LancamentoRepository lancamentoRepository, UsuarioRepository usuarioRepository, NotificacaoServices notificacaoServices) {
+    public RelatorioService(LancamentoRepository lancamentoRepository, UsuarioRepository usuarioRepository, NotificacaoService notificacaoService) {
         this.lancamentoRepository = lancamentoRepository;
         this.usuarioRepository = usuarioRepository;
-        this.notificacaoServices = notificacaoServices;
+        this.notificacaoService = notificacaoService;
     }
 
     public List<LancamentoDTO> buscarLancamentosPorUsuarioId(Long usuarioId) {
@@ -189,7 +189,7 @@ public class RelatorioServices {
             byte[] pdfGerado = out.toByteArray();
 
             if (usuario != null) {
-                notificacaoServices.enviarRelatorioPorEmail(
+                notificacaoService.enviarRelatorioPorEmail(
                         usuario.getEmail(),
                         pdfGerado,
                         mes
